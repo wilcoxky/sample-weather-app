@@ -1,0 +1,46 @@
+
+volumes:
+  db:
+
+services:
+  db:
+    image: postgres:15
+    ports:
+      - "5432:5432"
+    volumes:
+      - db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: weather_app
+
+  rails:
+    build: .
+    depends_on:
+      - vite
+      - db
+    entrypoint: ./docker-rails.sh
+    environment:
+      RAILS_ENV: development
+      VITE_RUBY_HOST: vite
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+      DATABASE_NAME: weather_app
+      DATABASE_USERNAME: postgres
+      DATABASE_PASSWORD: postgres
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+  vite:
+    build: .
+    entrypoint: bash -c "npm install && bin/vite dev"
+    environment:
+      DEBUG: '*vite*'
+      RAILS_ENV: development
+      VITE_RUBY_HOST: 0.0.0.0
+    ports:
+      - "3036:3036"
+    volumes:
+      - .:/app
+

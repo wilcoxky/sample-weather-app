@@ -1,0 +1,2 @@
+class CacheWeather < ApplicationRecord
+end
