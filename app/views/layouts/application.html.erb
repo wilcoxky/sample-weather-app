@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html data-theme="cupcake">
   <head>
     <title><%= content_for(:title) || "Weather App" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -18,6 +18,8 @@
     <%= vite_client_tag %>
     <%= vite_react_refresh_tag %>
     <%= vite_typescript_tag 'application.tsx', 'data-turbo-track': 'reload', media: 'all' %>
+    <%= vite_stylesheet_tag 'app.css' %>
+
 
     <!--
       If using a TypeScript entrypoint file:

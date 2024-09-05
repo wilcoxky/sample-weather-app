@@ -37,6 +37,8 @@ console.log("Were firing on all cylinders");
 // Example: Import a stylesheet in app/frontend/index.css
 // import '~/index.css'
 
-const root = createRoot(document.getElementById("root"));
+import App from "../app";
 
-root.render(<h1>Hello World</h1>);
+const root = createRoot(document.getElementById("root") as HTMLElement);
+
+root.render(<App />);
