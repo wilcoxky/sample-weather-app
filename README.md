@@ -21,7 +21,7 @@ Before running the app, you will have to get the `master.key` file from the admi
 
 1. Clone the repository:
    ```
-   git clone https://github.com/wilcoxky/simple-weather-app.git
+   git clone https://github.com/wilcoxky/sample-weather-app.git
    ```
 2. Docker Development Setup
 In the root of the project run `docker compose build`, this will create the base docker images.
