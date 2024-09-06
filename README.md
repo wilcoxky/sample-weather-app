@@ -5,7 +5,7 @@
 This is a simple weather app that allows you to search for weather data by address or zip code. It uses the OpenWeatherMap API to get the weather data, and Googles Geocoding API to get the latitude and longitude of the address.
 
 ## Demo
-![Demo](https://github.com/wilcoxky/simple-weather-app/raw/main/wiki/assets/demo.gif)
+![Demo](https://github.com/wilcoxky/sample-weather-app/raw/main/wiki/assets/demo.gif)
 
 
 ## Prerequisites
