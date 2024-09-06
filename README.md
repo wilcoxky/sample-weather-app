@@ -65,8 +65,8 @@ The application has a `Dockerfile` to containerize the application.
 ### React, Vite
 In order to have hot reloading and a build process for the frontend I chose to use Vite. With the [vite-ruby-plugin](https://github.com/ElMassimo/vite_ruby) we can leverage the hot reloading of Vite and have a build process for production. With React being my frontend framework of choice, this was the best option. Along with the ability to use libraries like `@tanstack/react-router` and `@tanstack/react-query` which are both allow for quick development with TypeScript support to help scale.
 
-### Tailwind, DaisyUI
-I chose to use Tailwind over a framework like Bootstrap due to the flexibility and the ability to have custom CSS. With DaisyUI we get a UI library that is styled with Tailwind that is very easy to use and customize.
+### Tailwind, Shadcn
+I chose to use Tailwind over a framework like Bootstrap due to the flexibility and the ability to have custom CSS. With Shadcn we get a UI library that is styled with Tailwind that is very easy to use and customize.
 
 ### Rails Structure
 A bulk of the business logic is handled within services located in the `app/lib` directory. This is a decision I made to keep the controllers slim, and handle most of the logic within the services. I prefer to keep the controllers as a thin layer that just delegates to the services. This also allows for easy testing of the services.
