@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+import React, { MouseEventHandler, useState } from "react";
 
 import { createFileRoute } from "@tanstack/react-router";
 import clsx from "clsx";
 import { useDebounce } from "@uidotdev/usehooks";
 import { useQuery } from "@tanstack/react-query";
 import { isEmpty } from "lodash";
+import { WeatherSearch } from "@/components/weather-search";
 
 export const Route = createFileRoute("/")({
-  component: Home,
+  component: WeatherSearch,
 });
 
 function Home() {
@@ -26,16 +27,26 @@ function Home() {
     enabled: !isEmpty(searchEntered),
   });
 
-  const onSubmit = async (e) => {
+  const onSubmit: MouseEventHandler<HTMLButtonElement> = async (e) => {
     e.preventDefault();
-    const response = await fetch(`/weather?search=${searchEntered}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const data = await response.json();
-    console.log(data);
+    try {
+      const response = await fetch(`/weather?search=${searchEntered}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      if (error instanceof TypeError) {
+        console.log(error.message);
+      } else {
+      }
+      // Toast user with error
+      console.error(error);
+      // setError(error.message);
+    }
   };
   return (
     <div className="h-screen w-screen flex flex-col justify-center items-center">

@@ -1,6 +1,3 @@
-import React, { useState } from "react";
-import clsx from "clsx";
-// import "./app.css";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 

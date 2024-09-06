@@ -36,11 +36,17 @@ gem "sentry-rails"
 # Vite integration
 gem "vite_rails"
 
+# Geocoding
+gem "geocoder"
+
 # Postgres
 gem "pg"
 
 # HTTParty
 gem "httparty"
+
+# Good Job
+gem "good_job"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: [:windows, :jruby]
@@ -74,4 +80,5 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
+  gem "webmock"
 end

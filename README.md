@@ -4,6 +4,9 @@
 
 This is a simple weather app that allows you to search for weather data by address or zip code. It uses the OpenWeatherMap API to get the weather data, and Googles Geocoding API to get the latitude and longitude of the address.
 
+## Demo
+![Demo](https://github.com/wilcoxky/simple-weather-app/raw/main/wiki/assets/demo.gif)
+
 
 ## Prerequisites
 
@@ -67,6 +70,33 @@ I chose to use Tailwind over a framework like Bootstrap due to the flexibility a
 
 ### Rails Structure
 A bulk of the business logic is handled within services located in the `app/lib` directory. This is a decision I made to keep the controllers slim, and handle most of the logic within the services. I prefer to keep the controllers as a thin layer that just delegates to the services. This also allows for easy testing of the services.
+For formatting and linting we use [Rubocop](https://github.com/rubocop/rubocop) for Ruby. The rubocop config is based on the [shopify style guide](https://shopify.github.io/ruby-style-guide/). This allows for a consistent style throughout the codebase. For the frontend we use [ESLint](https://eslint.org/) and [Prettier](https://prettier.io/) to format the JavaScript and TypeScript.
 
 ### Background Jobs
 Due to the requirement of our requests to OpenWeather being cached for 30 mins, I choose [GoodJob](https://github.com/bensheldon/good_job) to handle the background jobs (i.e clearing the cache after 30 mins). GoodJob also allows for jobs to be configured in cron style to run on set intervals
+
+
+### Caching
+I chose to make a custom caching layer by adding a table WeatherCache to store the weather data. This allows us to cache the weather data and clear the cache when needed. It is deleted via a `GoodJob` background job that runs on a set interval checking for expired cache. I chose to use the existing database for simplicity and the current scale of the application. As queries become more complex and the application grows I would recommend using a more robust caching solution such as Redis.
+
+### Data Flow Diagram
+
+Here's a data flow diagram illustrating the interaction between different components of the system:
+
+[![](https://mermaid.ink/img/pako:eNqNU8tqwzAQ_JVFpxQSetch0Ca05FBaGkovvizS2haxJVeSCWnIv1eyYho59OGTtJqZnZFXRyaMJMaZo4-etKC1wspiW2gI35sju1gslw_WaE9a8qECFDbWAWpAKS05B8bCp-ogaiXmyAjkexS7gfsaWzgP3sDtntDXQWqvfP2zypkaLTySCXWlK7h72WRa2cn_Bd_PDlYoauKwqknsQJUwOpPoEZQDEc9lomecRZ7NdUY7gtKaNsfBrFY-WmmVczdXPp470iN-iDbblAl6GXKCSjEb9Mr3ksKfkNAYXQ271GFC-MXsBPnXRW29sTS5JZ0nnoxA0Ihjw2GtXNfgISNftfuetdxmPjKXEmzOWrItKhnm-BgFCxYOWyoYD0uJdlewQp8CDntvtgctGPe2pznruyAwzjzjJTYuVEmqEPIpPYzhfcyZNX1VJ9rpC0UhF3Q?type=png)](https://mermaid.live/edit#pako:eNqNU8tqwzAQ_JVFpxQSetch0Ca05FBaGkovvizS2haxJVeSCWnIv1eyYho59OGTtJqZnZFXRyaMJMaZo4-etKC1wspiW2gI35sju1gslw_WaE9a8qECFDbWAWpAKS05B8bCp-ogaiXmyAjkexS7gfsaWzgP3sDtntDXQWqvfP2zypkaLTySCXWlK7h72WRa2cn_Bd_PDlYoauKwqknsQJUwOpPoEZQDEc9lomecRZ7NdUY7gtKaNsfBrFY-WmmVczdXPp470iN-iDbblAl6GXKCSjEb9Mr3ksKfkNAYXQ271GFC-MXsBPnXRW29sTS5JZ0nnoxA0Ihjw2GtXNfgISNftfuetdxmPjKXEmzOWrItKhnm-BgFCxYOWyoYD0uJdlewQp8CDntvtgctGPe2pznruyAwzjzjJTYuVEmqEPIpPYzhfcyZNX1VJ9rpC0UhF3Q)
+
+
+```mermaid
+sequenceDiagram
+    User-->>Frontend: User enters an address or zip code
+    Frontend->>Backend: Request to /weather with address or zip code
+    Backend-->>Geocoding API: Request to Geocoding API with address or zip code
+    Backend-->>Weather Cache: Check if weather data is cached
+    Weather Cache-->>Backend: Response from Weather Cache (hit or miss)
+    Backend-->>OpenWeather API: (If miss) Request to OpenWeather API with latitude and longitude
+    OpenWeather API-->>Backend: Response from OpenWeather API
+    Backend-->>Weather Cache: Store weather data in Weather Cache
+    Frontend-->>User: Display weather data
+    Backend-->>Frontend: Response from /weather with weather data
+```
+

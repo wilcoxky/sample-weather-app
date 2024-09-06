@@ -1,12 +1,11 @@
 # frozen_string_literal: true
 
-Module OpenWeather
-module Cache
-  def get(query:, latitude:, longitude:, zip_code:)
-    CacheWeather.find_by(query: query, latitude: latitude, longitude: longitude, zip_code: zip_code)
-  end
-
-  def set(query:, latitude:, longitude:, zip_code:, data:)
-    CacheWeather.create(query: query, latitude: latitude, longitude: longitude, zip_code: zip_code, data: data)
+module OpenWeather
+  class Cache
+    class << self
+      def clear_expired_cache
+        CacheWeather.where("created_at < ? ", Time.now - OpenWeather::CACHE_EXPIRATION_TIME).delete_all
+      end
+    end
   end
 end
